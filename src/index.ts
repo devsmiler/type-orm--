@@ -47,5 +47,16 @@ AppDataSource.initialize()
         stud.projects = [proj, proj2];
         stud.classes = [classes1, classes2];
         await AppDataSource.manager.save(stud);
+
+        const studentRepository = AppDataSource.manager.getRepository(Student);
+        const qur = await studentRepository.find();
+        const qur2 = await studentRepository.find({
+            relations: { projects: true, classes: true },
+            order: { id: "DESC" },
+            take: 2,
+            cache: true,
+        });
+        console.log(qur);
+        console.log(qur2);
     })
     .catch((error) => console.log(error));
